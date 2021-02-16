@@ -80,6 +80,6 @@ We can do ```find / -name [FILENAME]``` or ```find /* | grep [FILENAME]```
 # Criptography
 
 * **Base 64:** If we see a combination of letters and numbers, it may be Base 64 encoding, the best way to find out if it contains at least one '=' at the end.
-  * How to decypher:
+  * How to decode:
     * In linux: ```echo [BASE64 STRING] | base64 -d``` 
     * Online: [Cyberchef](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true))
