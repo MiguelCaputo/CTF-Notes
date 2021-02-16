@@ -16,6 +16,12 @@ We can do ```ip addr show tun0``` or ```ifconfig```
 
 We can do ```python -c "print('Hello')"``` or ```python3 -c "print('Hello')"```
 
+# Make a python script executable from command line
+
+ 1. Add ```#!/usr/bin/env python``` at the beginning of the script
+ 2. Make the file executable ```chmod +x myfile.py```
+ 3. Execute the script ```./myfile.py```
+
 # If commands like "cat" are not allowed
 
 We can use ```grep . file``` or ```while read line; do echo $line; done < file```
