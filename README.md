@@ -36,7 +36,7 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 
 * **Types of ports and how to access them:** <br>
   * **Port 80:** Usually http
-  * **Port 22:** Usually ssh
+  * **Port 22:** Usually ssh [Guide](https://phoenixnap.com/kb/linux-ssh-commands)
     * You can use the command ```ssh```
       * ```ssh [USERNAME]@[IP]```
       * It will ask for a password:
