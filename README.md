@@ -12,7 +12,7 @@
 
 We can do ```ip addr show tun0``` or ```ifconfig```
 
-# Where to find all the usefull stuff in Kali linux:
+# Where to find all the usefull stuff in Kali linux
 
 ```/usr/share/```
 
