@@ -254,3 +254,57 @@ shell
     * In linux: ```echo [BASE64 STRING] | base64 -d``` 
     * Online: [Cyberchef](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true))
 
+## Forensics
+
+-  ```strings [FILE]``` see all the strings inside the file
+- ```hexdump [FILE]```  see the hex of the file 
+-  ```hexedit [FILE]```  modify the hex of a file
+-  ```file [FILE]```  see the type of file
+-  ```exiftool [FILE]``` see metadata of file
+### Images
+
+##### JPG
+
+If after running ```strings``` on the file we see a line like 
+> ()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
+  #3R
+&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
+
+The file contains hidden information using steganography
+
+We can use ```steghide``` to extract the information if the file does not have a password
+
+```steghide extract -sf [FILE]```
+
+If the file has a password we can use ```stegcracker```
+
+```stegcracker [FILE] [wordlist]```
+
+##### PNG
+
+```pngcheck [FILE]``` see what is wrong with the file
+
+### Videos
+
+```mediainfo [FILE]``` see metadata of video
+```foremost [FILE]``` see if there are other videos inside the video
+
+### Excel Documents
+
+Excel Documents are pretty much zip files, so we can unzip them 
+
+```unzip [FILE]```
+
+### Audio Files
+
+We can use tools like "Audacity" or "Sonic Visualizer"
+
+### Wireshark
+
+We can always right click in a package -> Follow [PACKAGE TYPE]  Stream
+
+##### Adding a key file 
+
+We need to add the key file into WireShark
+
+> EDIT => PREFERENCES => PROTOCOLS => TLS => (Pre)-Master-Secret Log filename
