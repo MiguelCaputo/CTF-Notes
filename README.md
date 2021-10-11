@@ -52,7 +52,7 @@ We can use ```grep . file``` or ```while read line; do echo $line; done < file``
 -  ```file [FILE]```  see the type of file
 -  ```exiftool [FILE]``` see metadata of file
 -  ```foremost [FILE]``` see if there are other files inside the file
--  ```Binwalk [FILE]``` Binwalk is a tool for searching binary files like images and audio files for embedded files and data.
+-  ```binwalk [FILE]``` Binwalk is a tool for searching binary files like images and audio files for embedded files and data.
 	- With the -e flag it will also extract the files
 - Stegsolve is also a good tool to apply modifications into an image [Github](https://github.com/eugenekolo/sec-tools/tree/master/stego/stegsolve/stegsolve)
 ### Images
