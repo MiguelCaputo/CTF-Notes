@@ -151,7 +151,7 @@ If we see a combination of letters and numbers, it may be Base 64 encoding, the 
 - https://crackstation.net/
 - Hashcat - If we are given a hash we can use hashcat to try and break it
 	- Dictionary attack ```hashcat -m [Module] hash.txt [Wordlist]```
-	- Brute Force attack ```hashcat -m [Module] hash.txt [Pattern]```
+	- Brute Force attack ```hashcat -m [Module] -a 3 hash.txt [Pattern]```
 	- [List of available modules and formats](https://hashcat.net/wiki/doku.php?id=example_hashes)
 	- [More on brute force attacks](https://hashcat.net/wiki/doku.php?id=mask_attack)
 - John - You can also use John to break some hashes
