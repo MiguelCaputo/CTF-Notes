@@ -209,6 +209,9 @@ If we now the username we can use ```sherlock```
 
 ```sherlock [USERNAME]```
 
+### Wifi Lookup
+
+If we are given a WIFI SSID or BSSID we can use this website to locate it https://wigle.net/index
 ## Web
 
 1. Check the source file
