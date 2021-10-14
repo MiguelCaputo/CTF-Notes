@@ -73,6 +73,7 @@ r.close() # Close connection
 -  ```binwalk [FILE]``` Binwalk is a tool for searching binary files like images and audio files for embedded files and data.
 	- With the -e flag it will also extract the files
 - Stegsolve is also a good tool to apply modifications into an image [Github](https://github.com/eugenekolo/sec-tools/tree/master/stego/stegsolve/stegsolve)
+- If you are sure there is something hidden inside using Steg you can try to bruteforce it with [Digital Invisible Ink Tool](http://diit.sourceforge.net/)
 
 ### Images
 
