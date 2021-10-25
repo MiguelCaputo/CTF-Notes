@@ -10,11 +10,19 @@
 
 ```ping [IP]```
 
-### Get my IP
+### Get your IP
 
 ```ip a``` or ```ifconfig``` 
 
 If we only want tun0 ```ifconfig tun0```
+
+### Check linux information
+
+```uname -a```
+
+Distro information
+
+```cat /etc/*release```
 
 ### Where to find all the useful stuff in Kali Linux
 
@@ -160,6 +168,16 @@ If the logs are a CSV file you can always use Excel
 
 [List of some awesome tools](https://ericzimmerman.github.io/#!index.md)
 
+### SSL Certificates
+
+Finding the common name of a certificate
+
+```openssl x509 -noout -subject -in [CERT]```
+
+Finding which certificates are invalid
+
+```openssl verify -CAfile [ROOT CERT] [CERT]```
+
 ## Criptography
 
 When in doubt use [Cyberchef](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true)) 
@@ -177,23 +195,29 @@ If we are given the N, c and e values we can use RsaCtfTool
 
 ```python3 ./RsaCtfTool.py -n [N VALUE] -e [e VALUE] --uncipher [c VALUE]```
 
+If we need to find the smallest prime (p) or the biggest prime (q) we can input N [here](https://www.calculatorsoup.com/calculators/math/prime-factors.php)
+
 ### Hashes
 
-### Finding type of hash
+#### Finding type of hash
 
 - https://md5decrypt.net/en/HashFinder/
 - https://www.tunnelsup.com/hash-analyzer/
 - ```hash-identifier```
 
-### Crack them
+#### Crack them
 
 - https://crackstation.net/
 - Hashcat - If we are given a hash we can use hashcat to try and break it
 	- Dictionary attack ```hashcat -m [Module] hash.txt [Wordlist]```
-	- Brute Force attack ```hashcat -m [Module] -a 3 hash.txt [Pattern]```
+	- Brute Force attack ```hashcat -m [Module] -a 3 hash.txt [Pattern]``` (?a) is all characters
+	- Rules Attack ```hashcat -m [Module] hash.txt [Wordlist] -r [Rule file]```
+	- Hybrid Attack ```hashcat -m [Module] -a 6 hash.txt ([Wordlist Patter] | [Pattern Wordlist])```
 	- [List of available modules and formats](https://hashcat.net/wiki/doku.php?id=example_hashes)
 	- [More on brute force attacks](https://hashcat.net/wiki/doku.php?id=mask_attack)
 - John - You can also use John to break some hashes
+	- yescript ```john --format=crypt hash.txt --wordlist=[Wordlist]```
+- Opcrack - Awesome with raimbow tables (https://ophcrack.sourceforge.io/)
 
 ## OSINT
 
@@ -213,6 +237,11 @@ If we now the username we can use ```sherlock```
 ### Wifi Lookup
 
 If we are given a WIFI SSID or BSSID we can use this website to locate it https://wigle.net/index
+
+### Stolen Cameras
+
+https://www.stolencamerafinder.com/
+
 ## Web
 
 1. Check the source file
@@ -283,7 +312,7 @@ Usually FTP
 - **You can put files inside the ftp system using** 
 	- ```put [FILE]```
 			
- #### Port 445/139 (SMB)
+#### Port 445/139 (SMB)
  
 Usually SMB
 
@@ -308,6 +337,20 @@ Usually SMB
  
  - **Get RTC Info**
 	 - ```rpcinfo -p [IP]```
+
+ #### Port 25 (SMTP)
+ 
+ Usually SMTP
+ 
+ - **Enumerate**
+	 - ```smtp-user-enum```
+	 - Metasploit ```use auxiliary/scanner/smtp/smtp_enum ```
+
+ - **Find more info of the users**
+ 	- ```telnet [IP] [Port]```
+ 		- ```VRFY [USER] ```	
+ 	
+https://www.hackingarticles.in/4-ways-smtp-enumeration/
 
 ### Reverse Shell
 
