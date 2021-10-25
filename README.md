@@ -217,7 +217,7 @@ If we need to find the smallest prime (p) or the biggest prime (q) we can input 
 	- [More on brute force attacks](https://hashcat.net/wiki/doku.php?id=mask_attack)
 - John - You can also use John to break some hashes
 	- yescript ```john --format=crypt hash.txt --wordlist=[Wordlist]```
-- Opcrack - Awesome with raimbow tables (https://ophcrack.sourceforge.io/)
+- Opcrack - Awesome with rainbow tables (https://ophcrack.sourceforge.io/)
 
 ## OSINT
 
