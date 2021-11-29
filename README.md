@@ -138,7 +138,8 @@ Use Wireshark
 We can always right click in a package -> Follow [PACKAGE TYPE]  Stream
 
 We can extract files in:
-> File > Export > Objects > Http [More info](https://www.rubyguides.com/2012/01/four-ways-to-extract-files-from-pcaps/)
+> File > Export > Objects > Http [More info](https://www.rubyguides.com/2012/01/four-ways-to-extract-files-from-pcaps/) 
+
 We can also extract files like: ```tcpflow -r [FILE]```
 
 ##### Adding a key file 
