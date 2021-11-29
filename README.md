@@ -131,12 +131,15 @@ We can use tools like "Audacity" or "Sonic Visualizer"
 
 ### Network Capture files
 
+Run strings on it.
+
 Use Wireshark
 
 We can always right click in a package -> Follow [PACKAGE TYPE]  Stream
 
 We can extract files in:
 > File > Export > Objects > Http [More info](https://www.rubyguides.com/2012/01/four-ways-to-extract-files-from-pcaps/)
+We can also extract files like: ```tcpflow -r [FILE]```
 
 ##### Adding a key file 
 
@@ -165,6 +168,7 @@ If the logs are a CSV file you can always use Excel
 
 - We can use Windbg Preview
 - We can use [volatility](https://github.com/volatilityfoundation/volatility) 
+- We can use ```foremost``` to extract files inside.
 
 [List of some awesome tools](https://ericzimmerman.github.io/#!index.md)
 
